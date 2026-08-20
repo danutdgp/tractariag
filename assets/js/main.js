@@ -91,3 +91,28 @@ if (contactForm) {
     window.open(`https://wa.me/40751164175?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
   });
 }
+
+const galleryDialog = document.querySelector('#gallery-lightbox');
+if (galleryDialog) {
+  const dialogImage = galleryDialog.querySelector('img');
+  const dialogCaption = galleryDialog.querySelector('figcaption');
+  const closeButton = galleryDialog.querySelector('.gallery-lightbox-close');
+
+  document.querySelectorAll('[data-gallery-open]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const sourceImage = button.querySelector('img');
+      dialogImage.src = sourceImage.currentSrc || sourceImage.src;
+      dialogImage.alt = sourceImage.alt;
+      dialogCaption.textContent = button.dataset.caption || sourceImage.alt;
+      galleryDialog.showModal();
+    });
+  });
+
+  closeButton.addEventListener('click', () => galleryDialog.close());
+  galleryDialog.addEventListener('click', (event) => {
+    if (event.target === galleryDialog) galleryDialog.close();
+  });
+  galleryDialog.addEventListener('close', () => {
+    dialogImage.removeAttribute('src');
+  });
+}
